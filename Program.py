@@ -6,12 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-import upload_file as ufile
-import t_test as tt
-import correlation_test as ct
-
-from PyQt5 import QtCore, QtGui, QtWidgets
-
+from window import upload_file as ufile
+from core.correlations import correlation_test as ct
 
 # class Ui_MainWindow(object):
 #     def setupUi(self, MainWindow):
