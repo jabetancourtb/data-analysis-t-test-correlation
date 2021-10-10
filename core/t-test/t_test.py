@@ -32,4 +32,4 @@ def paired_t_test(column_1, column_2):
     if t_statictic.pvalue > alpha:
         print("The alternate hypothesis is rejected and the null hypothesis is taken. The two groups are the same")
     else:
-        print("The null hypothesis is rejected and the alternate hypothesis is taken. The two groups are different")
+        print("The null hypothesis is rejected and the alternate hypothesis is taken. The two groups are different") 
