@@ -6,15 +6,15 @@ class correlacion_test(object):
         self.data_file = data_file
         
     def pearson_cor(self, column_1, column_2):
-        return "success"
-        pearson_cor, pearson_pvalue = stats.pearsonr(self.data_file[column_1], self.data_file[column_2])
-        print(f"Pearson correlation: {pearson_cor:.03f}, p-value: {pearson_pvalue:.03f}")
-        return f'Pearson correlation: {pearson_cor:.03f}, p-value: {pearson_pvalue:.03f}'
-    
+        try:
+            pearson_cor, pearson_pvalue = stats.pearsonr(self.data_file[column_1], self.data_file[column_2])
+            return "Pearson Correlacion = %.3f, PValue = %.3f " % (pearson_cor, pearson_pvalue)
+        except:
+            return "Error El tipo de dato no es numerico."
     
     def spearman_cor(self, column_1, column_2):
-        return "success"
-        spearman_cor, spearman_pvalue = stats.spearmanr(self.data_file[column_1], self.data_file[column_2])
-        print(f"Spearman correlation: {spearman_cor:.03f}, p-value: {spearman_pvalue:.03f}")
-        return f"Spearman correlation: {spearman_cor:.03f}, p-value: {spearman_pvalue:.03f}"
-
+        try:
+            spearman_cor, spearman_pvalue = stats.spearmanr(self.data_file[column_1], self.data_file[column_2])
+            return "Spearman Correlacion = %.3f, PValue = %.3f " % (spearman_cor, spearman_pvalue)
+        except:
+            return "Error El tipo de dato no es numerico."

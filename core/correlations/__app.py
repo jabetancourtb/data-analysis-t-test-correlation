@@ -8,7 +8,9 @@ import os
 class correlacion_app(object):
     
     def __init__(self, root, headers, data_file):
-              
+        
+        print("Entra")
+        
         def white_title_result_correlation(title):
             _result.set(_result.get() + "\n\n" + title)
         
@@ -92,8 +94,8 @@ class correlacion_app(object):
           
             
         
-    def show(self):        
-        
+    async def show(self):    
+        print("Entra2")        
         self.toplevel.deiconify()
         self.toplevel.wait_window()
         value = _result.get()
