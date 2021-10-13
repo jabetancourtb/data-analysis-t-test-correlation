@@ -8,52 +8,61 @@ import pandas as pd
 import os
 
 
-def load_menu():
-    # Menu Archivo
-    filemenu = Menu(menubar, tearoff=0)
-    filemenu.add_command(label="Nuevo", command=new)
-    filemenu.add_command(label="Arrastrar Archivo")
-    filemenu.add_command(label="Guardar", command=inis)
-    filemenu.add_command(label="Cerrar")
-    filemenu.add_separator()
-    filemenu.add_command(label="Salir", command=root.quit)
+class app(object):
+    def __init__(self):
+        
+        # Configuración de la raíz
+        self.root = Tk()        
+        self.root.geometry('800x500')
+        
+        self.menubar = Menu(self.root)
+        self.root.config(menu=self.menubar)
+        
+        self.config_panel = form_config(self.root)
+        
+        self.load_menu()
+        self._init()
+                
+        self.root.mainloop()
 
-    # Menu editar
-    editmenu = Menu(menubar, tearoff=0)
-    editmenu.add_command(label="Cortar")
-    editmenu.add_command(label="Copiar")
-    editmenu.add_command(label="Pegar")
-
-    # Menu ayuda
-    helpmenu = Menu(menubar, tearoff=0)
-    helpmenu.add_command(label="Ayuda")
-    helpmenu.add_separator()
-    helpmenu.add_command(label="Acerca de...")
-
-    menubar.add_cascade(label="Archivo", menu=filemenu)
-    menubar.add_cascade(label="Editar", menu=editmenu)
-    menubar.add_cascade(label="Ayuda", menu=helpmenu)
-
-
-def _init():    
-    config_panel.load_header()
-    config_panel.create_panel()
-    config_panel.see_panel()
-    config_panel.config_style()
+            
+    def load_menu(self):
+        # Menu Archivo
+        filemenu = Menu(self.menubar, tearoff=0)
+        filemenu.add_command(label="Nuevo", command=lambda: self._new_form())
+        filemenu.add_command(label="Arrastrar Archivo")
+        filemenu.add_command(label="Guardar")
+        filemenu.add_command(label="Cerrar")
+        filemenu.add_separator()
+        filemenu.add_command(label="Salir", command=self.root.quit)
     
+        # Menu editar
+        editmenu = Menu(self.menubar, tearoff=0)
+        editmenu.add_command(label="Cortar")
+        editmenu.add_command(label="Copiar")
+        editmenu.add_command(label="Pegar")
     
-# Configuración de la raíz
-root = Tk()
-
-root.geometry('800x500')
-
-menubar = Menu(root)
-root.config(menu=menubar)
-
-config_panel = form_config(root)
+        # Menu ayuda
+        helpmenu = Menu(self.menubar, tearoff=0)
+        helpmenu.add_command(label="Ayuda")
+        helpmenu.add_separator()
+        helpmenu.add_command(label="Acerca de...")
     
-_init()
+        self.menubar.add_cascade(label="Archivo")
+        self.menubar.add_cascade(label="Editar")
+        self.menubar.add_cascade(label="Ayuda")
+    
+    def _new_form(self):        
+        del self.config_panel
+        self.config_panel = form_config(self.root)
+        self._init()
+    
+    def _init(self):    
+        self.config_panel.load_header()
+        self.config_panel.create_panel()
+        self.config_panel.see_panel()
+        self.config_panel.config_style()
+        
 
-
-# Finalmente bucle de la aplicación
-root.mainloop()
+    
+app()

@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import ttk
 from PIL import Image, ImageTk
+import subprocess
+import os
 
 from events import  events_buttons
 from core.correlations.__app import  correlacion_app
@@ -19,6 +21,8 @@ class form_config(object):
         
         self._events_buttons = events_buttons()
         
+    def __del__(self):
+        print("Object deleted")
         
     def create_panel(self):
         self.panedwindow = ttk.Panedwindow(self.root, orient=HORIZONTAL)
@@ -65,29 +69,40 @@ class form_config(object):
         
     def change_file_path(self, name='', index='', mode=''):
         if len(self.file_path.get()) > 0:
-            self.button_correlation = ttk.Button(self.form_left, text="Correlation Test", command=lambda: self.load_correlation())                   
+            self.button_correlation = ttk.Button(self.form_left, text="Correlation Test", command=lambda: self.open_modal_correlation())                   
             self.button_correlation.place(relx=0.5,y=20, anchor=CENTER)
             
-            #self.button_correlation2 = ttk.Button(self.form_left, text="Correlation Test", command=lambda: self.load_correlation())                   
-            #self.button_correlation2.place(relx=0.5,y=60, anchor=CENTER)
+            #self.button_correlation2 = ttk.Button(self.form_left, text="generate pdf", command=lambda: self.generate_pdf())                   
+            #self.button_correlation2.place(relx=0.5,y=60, anchor=CENTER)            
             
-            self.add_title('Hola mundo')
-            self.add_text('Hola mundo2')
-            self.add_image('images\Captura.PNG', 400, 300)
     
+    def open_modal_correlation(self):   
+        result = []
+        app_correlation = correlacion_app(self.root)
+        app_correlation.init_form(self._events_buttons.data_head, self._events_buttons.data_file)
+        app_correlation.show()
+        result = app_correlation.get_result()
+        self.show_result(result)
     
-    def load_correlation(self):
-        self.open_modal_correlation()
-        
-        
-    def open_modal_correlation(self):        
-        #asyncio.ensure_future(self._events_buttons.generate_correlation(self.root))
-        #select_correlation(root)
-        print( self._events_buttons)
-        result = correlacion_app(self.root, self._events_buttons.data_head, self._events_buttons.data_file).show()
-        print(result)
-        return result
-    
+    def show_result(self, result):        
+        for r in result:
+            if "title" in r:
+                self.add_title(r['title'])
+            
+            if "text" in r:
+                self.add_text(r['text'])
+            
+            if "image" in r:
+                self.add_image(r['image'], r['image_width'], r['image_height'])
+                
+            index = 2
+            for x in range(10):
+                if f'text{index}' in r:
+                    self.add_text(r[f'text{index}'])                
+                else:
+                    break                
+                index = index + 1
+                
     
     def get_index(self):
         self._index = self._index + 1
@@ -97,7 +112,7 @@ class form_config(object):
     def add_title(self, texto):
         
         index = self.get_index()        
-        self._data[f'root_tile_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 14))
+        self._data[f'root_tile_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 13))
         
         self.canvas.insert("end", "\n\n")
         self.canvas.window_create("end", window=self._data[f'root_tile_{index}'])
@@ -107,7 +122,7 @@ class form_config(object):
     
     def add_text(self, texto):
         index = self.get_index()
-        self._data[f'root_text_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 12))
+        self._data[f'root_text_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 10))
         
         self.canvas.window_create("end", window=self._data[f'root_text_{index}'])
         self.canvas.insert("end", "\n")        
@@ -128,11 +143,8 @@ class form_config(object):
         self.canvas.window_create("end", window=self._data[f'root_image_{index}'])
         self.canvas.insert("end", "\n")        
         self.panedwindow.update()
-        
-         
-        
+             
     
-    #def create_label_titulo(self):
         
     
         
