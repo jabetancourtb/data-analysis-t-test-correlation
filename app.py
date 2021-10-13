@@ -45,7 +45,7 @@ def _init():
 # Configuración de la raíz
 root = Tk()
 
-root.geometry('700x400')
+root.geometry('800x500')
 
 menubar = Menu(root)
 root.config(menu=menubar)
