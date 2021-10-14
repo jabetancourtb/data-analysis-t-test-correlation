@@ -98,5 +98,4 @@ class correlacion_app(object):
         
     def get_result(self):        
         returl = self.data_result
-        print(returl)
         return returl
