@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import scipy.stats as stats
 from scipy.stats import ttest_1samp
@@ -8,23 +9,18 @@ class t_test(object):
         
         
     # ------------- Function for insert data for one sample T test ------------- #
-    def insert_data(self):
-        sample_data = []
-        sample_size = int(input('Enter the samples size: '))
-        
-        for element in range(1, sample_size, 1):
-            data = int(input('Enter data: '))
-            sample_data.append(data)
-            
-        print(sample_data)
-        return sample_data
+    def random_data_sample(self, sample_size, column_1):
+        return self.data_file[column_1].sample(n=sample_size)
     
     
     # ------------- Function for one sample T test ------------- #
-    def one_sample_t_test(self, sample_size, sample_data):
-        df = pd.DataFrame(sample_data)
-        t_statictic = ttest_1samp(sample_data,  df.mean()[0])
-        print(f"Test statistic: {t_statictic[0]:.03f}, p-value: {t_statictic[1]:.03f}")
+    def one_sample_t_test(self, sample_size, column_1):
+        random_data_sample = self.random_data_sample(sample_size, column_1)
+        #print(random_data_sample)
+        df = pd.DataFrame(random_data_sample)
+        t_statictic = ttest_1samp(random_data_sample,  df.mean()[0])
+        #print(f"Test statistic: {t_statictic[0]:.03f}, p-value: {t_statictic[1]:.03f}")
+        return t_statictic
         
           
     # ------------- Function for paired t test with two samples ------------- #
@@ -37,3 +33,8 @@ class t_test(object):
             print("The alternate hypothesis is rejected and the null hypothesis is taken. The two groups are the same")
         else:
             print("The null hypothesis is rejected and the alternate hypothesis is taken. The two groups are different")
+            
+
+
+#r = t_test("")
+#r.one_sample_t_test(10)

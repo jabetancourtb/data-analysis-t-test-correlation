@@ -7,6 +7,7 @@ import os
 
 from events import  events_buttons
 from core.correlations.__app import  correlacion_app
+from core.t_test.__app import t_test_app
 import asyncio
 import time
 
@@ -69,19 +70,30 @@ class form_config(object):
         
     def change_file_path(self, name='', index='', mode=''):
         if len(self.file_path.get()) > 0:
+            self.button_correlation2 = ttk.Button(self.form_left, text="T Test", command=lambda: self.open_modal_t_test())                   
+            self.button_correlation2.place(relx=0.5,y=20, anchor=CENTER) 
+            
             self.button_correlation = ttk.Button(self.form_left, text="Correlation Test", command=lambda: self.open_modal_correlation())                   
-            self.button_correlation.place(relx=0.5,y=20, anchor=CENTER)
-            
+            self.button_correlation.place(relx=0.5,y=50, anchor=CENTER)
+
             #self.button_correlation2 = ttk.Button(self.form_left, text="generate pdf", command=lambda: self.generate_pdf())                   
-            #self.button_correlation2.place(relx=0.5,y=60, anchor=CENTER)            
+            #self.button_correlation2.place(relx=0.5,y=60, anchor=CENTER)  
             
-    
+            
     def open_modal_correlation(self):   
         result = []
         app_correlation = correlacion_app(self.root)
         app_correlation.init_form(self._events_buttons.data_head, self._events_buttons.data_file)
         app_correlation.show()
         result = app_correlation.get_result()
+        self.show_result(result)
+            
+    def open_modal_t_test(self):   
+        result = []
+        app_t_test = t_test_app(self.root)
+        app_t_test.init_form(self._events_buttons.data_head, self._events_buttons.data_file)
+        app_t_test.show()
+        result = app_t_test.get_result()
         self.show_result(result)
     
     def show_result(self, result):        
