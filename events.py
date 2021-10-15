@@ -24,4 +24,4 @@ class events_buttons(object):
         self.data_head = []
         for idx, valx in enumerate(self.data_file.columns):
             self.data_head.append(valx)
-       
+     

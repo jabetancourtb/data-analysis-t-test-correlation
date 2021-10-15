@@ -4,6 +4,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import subprocess
 import os
+import subprocess
 
 from events import  events_buttons
 from core.correlations.__app import  correlacion_app
@@ -22,8 +23,10 @@ class form_config(object):
         
         self._events_buttons = events_buttons()
         
-    def __del__(self):
-        print("Object deleted")
+    def destroy_form(self):
+        self.panedwindow.destroy()
+        self.button_file.destroy()
+        self.label_file_path.destroy()
         
     def create_panel(self):
         self.panedwindow = ttk.Panedwindow(self.root, orient=HORIZONTAL)
@@ -61,12 +64,16 @@ class form_config(object):
         
         self.file_path.trace_add("write", self.change_file_path)
         
-        self.button_file = ttk.Button(self.root, text="Cargar Archivo", command=lambda: self.file_path.set(self._events_buttons.search_files()))
+        self.button_file = ttk.Button(self.root, text="Cargar Archivo", command=lambda: self.load_path_file())
         self.button_file.pack() 
 
         self.label_file_path = ttk.Label(self.root, textvariable=self.file_path)
         self.label_file_path.pack()
-           
+    
+    
+    def load_path_file(self):
+        self.file_path.set(self._events_buttons.search_files())
+        
         
     def change_file_path(self, name='', index='', mode=''):
         if len(self.file_path.get()) > 0:
@@ -124,7 +131,7 @@ class form_config(object):
     def add_title(self, texto):
         
         index = self.get_index()        
-        self._data[f'root_tile_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 13))
+        self._data[f'root_tile_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 13), style= 'Test.TLabel')
         
         self.canvas.insert("end", "\n\n")
         self.canvas.window_create("end", window=self._data[f'root_tile_{index}'])
@@ -134,7 +141,7 @@ class form_config(object):
     
     def add_text(self, texto):
         index = self.get_index()
-        self._data[f'root_text_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 10))
+        self._data[f'root_text_{index}'] = ttk.Label(self.form_rigth, text= f'\n{texto}', font=("Helvetica", 10, 'bold'), style= 'Test.TLabel')
         
         self.canvas.window_create("end", window=self._data[f'root_text_{index}'])
         self.canvas.insert("end", "\n")        
@@ -156,7 +163,9 @@ class form_config(object):
         self.canvas.insert("end", "\n")        
         self.panedwindow.update()
              
-    
+    def open_tutorial(self):
+        path = 'files\\tutorial.pdf'                
+        subprocess.Popen([path], shell=True)
         
     
         

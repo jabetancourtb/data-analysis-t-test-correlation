@@ -14,15 +14,16 @@ class app(object):
         # Configuración de la raíz
         self.root = Tk()        
         self.root.geometry('800x500')
+                
         
-        self.menubar = Menu(self.root)
-        self.root.config(menu=self.menubar)
-        
-        self.config_panel = form_config(self.root)
-        
-        self.load_menu()
+        self.config_panel = form_config(self.root)        
         self._init()
                 
+        
+        self.menubar = Menu(self.root)
+        self.root.config(menu=self.menubar)        
+        self.load_menu()
+        
         self.root.mainloop()
 
             
@@ -30,11 +31,11 @@ class app(object):
         # Menu Archivo
         filemenu = Menu(self.menubar, tearoff=0)
         filemenu.add_command(label="Nuevo", command=lambda: self._new_form())
-        filemenu.add_command(label="Arrastrar Archivo")
+        filemenu.add_command(label="Cargar Archivo", command= lambda: self._load_file())
         filemenu.add_command(label="Guardar")
         filemenu.add_command(label="Cerrar")
         filemenu.add_separator()
-        filemenu.add_command(label="Salir", command=self.root.quit)
+        filemenu.add_command(label="Salir", command= lambda: self._destroy_root())
     
         # Menu editar
         editmenu = Menu(self.menubar, tearoff=0)
@@ -46,14 +47,20 @@ class app(object):
         helpmenu = Menu(self.menubar, tearoff=0)
         helpmenu.add_command(label="Ayuda")
         helpmenu.add_separator()
-        helpmenu.add_command(label="Acerca de...")
+        helpmenu.add_command(label="Tutorial", command=lambda: self.config_panel.open_tutorial())
     
-        self.menubar.add_cascade(label="Archivo")
-        self.menubar.add_cascade(label="Editar")
-        self.menubar.add_cascade(label="Ayuda")
+        self.menubar.add_cascade(label="Archivo", menu=filemenu )
+        self.menubar.add_cascade(label="Editar", menu=editmenu)
+        self.menubar.add_cascade(label="Ayuda", menu=helpmenu)
+    
+    def _load_file(self):
+        self.config_panel.load_path_file()
+    
+    def _destroy_root(self):
+        self.root.destroy()
     
     def _new_form(self):        
-        del self.config_panel
+        self.config_panel.destroy_form()
         self.config_panel = form_config(self.root)
         self._init()
     

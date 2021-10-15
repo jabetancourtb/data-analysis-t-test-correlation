@@ -11,7 +11,7 @@ class correlacion_app(object):
                 
         self.toplevel = Toplevel(root)
         self.toplevel.title("Confirmation")
-        self.toplevel.geometry("500x300")
+        self.toplevel.geometry("600x400")
         self.toplevel.config(bg="white")        
     
     
@@ -20,7 +20,6 @@ class correlacion_app(object):
         
         #datos de retorno
         self.data_result = []
-        self.data_result.append({'title': 'CORRELATION'})
         
         #Filter value numeric
         filet_head_numeric = data_file.select_dtypes(include='number')
@@ -29,23 +28,33 @@ class correlacion_app(object):
                    
         for idx, valx in enumerate(self.headers):
             _headers.set(_headers.get() + " " + valx)
-                         
+        
+        ttk.Label(self.toplevel, text="CORRELATION", font=("Helvetica", 13)).place(y=10,x=200)
+        
+        label_list = ttk.Label(self.toplevel, text="Seleccione los campos para la correlación").place(x=20, y=40)
+        #label_list.pack()
+        
+        label_radio = ttk.Label(self.toplevel, text="Seleccione el tipo de correlación").place(x=280, y=40)
+        #label_radio.pack()
+        
         radio1 = Radiobutton(self.toplevel, text="Pearson correlation", variable=_seleccionRadio, value=1)
-        radio1.grid(row=2, column=0)
+        radio1.place(x=280, y=60)
         
         radio2 = Radiobutton(self.toplevel, text="Spearman correlation", variable=_seleccionRadio, value=2)
-        radio2.grid(row=3, column=0)
+        radio2.place(x=280, y=100)
         _seleccionRadio.set(1)
-                
+             
+        
+        
         self.list_box = Listbox(self.toplevel, listvariable=_headers, selectmode=MULTIPLE, width=20, height=10)
-        self.list_box.grid(row=1, column=1, columnspan=2)
+        self.list_box.place(x=20, y=60, width=200, height=300)                #grid(row=1, column=1, columnspan=2)
         
         # Add Button for making selection
-        buttonAceptar = Button(self.toplevel, text="Seleccionar", command=lambda: self.generate_correlation(), bg="blue", fg="white")    
-        buttonAceptar.grid(row=4, column=0)
+        buttonAceptar = Button(self.toplevel, text="Generar", command=lambda: self.generate_correlation(), bg="blue", fg="white")    
+        buttonAceptar.place(x=280, y=150)
         
         buttonCancel = Button(self.toplevel, text="Cancelar", command=lambda: self.cancel_correlation(), bg="blue", fg="white")
-        buttonCancel.grid(row=5, column=0)    
+        buttonCancel.place(x=360, y=150)
 
 
     def init_variable(self):
@@ -57,6 +66,7 @@ class correlacion_app(object):
 
     
     def cancel_correlation(self):
+        self.data_result.append({'title': 'CORRELATION'})
         self.data_result.append({'text': 'Cancel correlation'})
         self.toplevel.destroy()
         
@@ -68,7 +78,8 @@ class correlacion_app(object):
         for i in self.list_box.curselection():
             options.append(self.list_box.get(i))
                 
-        if len(options) > 1:            
+        self.data_result.append({'title': 'CORRELATION'})  
+        if len(options) > 1:          
             for idx, valx in enumerate(options):
                 for idy, valy in enumerate(options):
                     if idx < idy:                        
@@ -82,12 +93,17 @@ class correlacion_app(object):
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
-                            returl_pearson['text'] = 'Spearman correlation of, "{valx}" and "{valy}"'
+                            returl_pearson['text'] = f'Spearman correlation of, "{valx}" and "{valy}"'
                             returl_pearson['text2'] = correlacion_test(self.data_file).spearman_cor(valx, valy) 
                             returl_pearson['text3'] = ''
                             
                         self.data_result.append(returl_pearson)
-                                                        
+        
+        else:           
+            returl_pearson = {}
+            returl_pearson['text'] = f'Minimo seleccione 2 propiedades para generar la correlacion'
+            self.data_result.append(returl_pearson)
+                        
         self.toplevel.destroy()
             
         
