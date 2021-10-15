@@ -17,7 +17,11 @@ class logic_graphics(object):
         ax1.set_title(title)
         
         fig.savefig(path_img, format='png')
-        return f'{os.getcwd()}\{path_img}'
+        
+        if platform.system() == "Windows":
+            return f'{os.getcwd()}\{path_img}'
+        elif platform.system() == "Linux":
+            return f'{os.getcwd()}/{path_img}'
         
 
     def graphyc_matshow(self, plot_data):
@@ -32,7 +36,12 @@ class logic_graphics(object):
         plt.ylim([5.5, -0.5])
         
         fig.savefig(path_img, format='png')
-        return f'{os.getcwd()}\{path_img}'
+      
+        if platform.system() == "Windows":
+            return f'{os.getcwd()}\{path_img}'
+        elif platform.system() == "Linux":
+            return f'{os.getcwd()}/{path_img}'
+        
         
     def graphyc_ylabel(self, data, title_y):
         path_img = self.get_path_img()
@@ -41,7 +50,12 @@ class logic_graphics(object):
         plt.ylabel('some numbers')
         plt.show()
         fig.savefig(path_img, format='png')
-        return f'{os.getcwd()}\{path_img}'
+        
+        if platform.system() == "Windows":
+            return f'{os.getcwd()}\{path_img}'
+        elif platform.system() == "Linux":
+            return f'{os.getcwd()}/{path_img}'
+        
     
     def get_guid(self):
         return uuid.uuid4()
@@ -51,6 +65,7 @@ class logic_graphics(object):
             return f'images\{self.get_guid()}.png'
         elif platform.system() == "Linux":
             return f'images/{self.get_guid()}.png'
+        
     
     def prueba(self):                
         ruta = ""
