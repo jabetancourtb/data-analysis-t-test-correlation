@@ -31,24 +31,47 @@ class t_test_app(object):
                          
         self.list_box = Listbox(self.toplevel, listvariable=_headers, selectmode=MULTIPLE, width=20, height=10)
         self.list_box.grid(row=1, column=1, columnspan=2)
+        self.list_box.bind('<<ListboxSelect>>', self.select_listbox_column)
         
         # Add Button for making selection
-        buttonAceptar = Button(self.toplevel, text="Seleccionar", command=lambda: self.generate_t_test(), bg="blue", fg="white")    
+        buttonAceptar = Button(self.toplevel, text="Seleccionar", command=lambda: self.get_t_test_method(), bg="blue", fg="white")    
         buttonAceptar.grid(row=4, column=0)
         
         buttonCancel = Button(self.toplevel, text="Cancelar", command=lambda: self.cancel_t_test(), bg="blue", fg="white")
         buttonCancel.grid(row=5, column=0) 
         
-        # -- Create the input for sample size
-        ttk.Label(self.toplevel, text="Enter the sample size").grid(row=0, column=3)
+        radio1 = Radiobutton(self.toplevel, text="One sample T Test", variable=_seleccionRadio, value=1, command=self.change_sample_size_input)
+        radio1.grid(row=2, column=0)
         
-        self.sample_size_input = ttk.Entry(self.toplevel)
-        self.sample_size_input.grid(row=1, column=3)
+        radio1 = Radiobutton(self.toplevel, text="Paired T Test", variable=_seleccionRadio, value=2, command=self.change_sample_size_input)
+        radio1.grid(row=3, column=0)
         
-        #e1.insert(10, "Miller")
-        #e1.delete(0, ttk.END)
+        _seleccionRadio.set(1)
         
-
+        self.change_sample_size_input()
+        
+    
+    # -- Create the input for sample size
+    def change_sample_size_input(self):
+        if _seleccionRadio.get() == 1:
+            self.sample_size_label = Label(self.toplevel, text="Enter the sample size")
+            self.sample_size_label.grid(row=0, column=3)
+            
+            self.sample_size_input = ttk.Entry(self.toplevel)
+            self.sample_size_input.grid(row=1, column=3)
+            
+        elif _seleccionRadio.get() == 2:
+            self.sample_size_label.destroy()
+            self.sample_size_input.destroy()
+       
+        
+    # -- Execute the method depending on the selected radiobutton
+    def get_t_test_method(self):
+        if _seleccionRadio.get() == 1:
+            self.generate_one_sample_t_test()
+        elif _seleccionRadio.get() == 2:
+            self.generate_paired_t_test()
+        
 
     def init_variable(self):
         global _headers
@@ -63,25 +86,52 @@ class t_test_app(object):
         self.toplevel.destroy()
         
         
-    def generate_t_test(self):
-       
-        options = []
-        
-        self.sample_size = int(self.sample_size_input.get())
-                
-        for i in self.list_box.curselection():
-            options.append(self.list_box.get(i))
+    def select_listbox_column(self, event):
+        if _seleccionRadio.get() == 1:
+            self.options = ""
 
-        if len(options) > 0:            
-            t_statictic = t_test(self.data_file).one_sample_t_test(self.sample_size, options[0])[0]
-            p_value = t_test(self.data_file).one_sample_t_test(self.sample_size, options[0])[1]
+            self.list_box.bind('<FocusOut>', lambda e: self.list_box.selection_clear(9, END))
+            
+            for i in self.list_box.curselection():
+                list_box_length = len(self.list_box.curselection()) + 1
+                self.options = self.list_box.get(i)
+                
+        elif _seleccionRadio.get() == 2:
+            options = []
+        
+            for i in self.list_box.curselection():
+                options.append(self.list_box.get(i))
+        
+        
+    def generate_one_sample_t_test(self):
+        self.sample_size = int(self.sample_size_input.get())
+             
+        if self.options != "":            
+            t_statictic = t_test(self.data_file).one_sample_t_test(self.sample_size, self.options)[0]
+            p_value = t_test(self.data_file).one_sample_t_test(self.sample_size, self.options)[1]
             return_t_test = {}
-            return_t_test['text'] = f'T Test of: "{options[0]}" with "{self.sample_size}" samples'
+            return_t_test['text'] = f'T Test of: "{self.options}" with "{self.sample_size}" samples'
             return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
             return_t_test['text3'] = '' 
             self.data_result.append(return_t_test)
                 
         print(self.data_result)                                             
+        self.toplevel.destroy()
+        
+        
+    def generate_paired_t_test():
+        if len(options) > 1:            
+            for idx, valx in enumerate(options):
+                for idy, valy in enumerate(options):
+                    if idx < idy:
+                        t_statictic = t_test(self.data_file).paired_t_test(self.options[0], self.options[1])[0]
+                        p_value = t_test(self.data_file).paired_t_test(self.options[0], self.options[1])[1]
+                        return_t_test = {}
+                        return_t_test['text'] = f'T Test of: "{self.options}" with "{self.sample_size}" samples'
+                        return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
+                        return_t_test['text3'] = ''                  
+                        self.data_result.append(return_t_test)
+                                                        
         self.toplevel.destroy()
             
         
