@@ -12,7 +12,7 @@ class correlacion_app(object):
                 
         self.toplevel = Toplevel(root)
         self.toplevel.title("Confirmation")
-        self.toplevel.geometry("500x300")
+        self.toplevel.geometry("500x500")
         self.toplevel.config(bg="white")          
     
     
