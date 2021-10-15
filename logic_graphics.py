@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import uuid
 import os
+import platform
 
 
 class logic_graphics(object):
@@ -46,7 +47,10 @@ class logic_graphics(object):
         return uuid.uuid4()
     
     def get_path_img(self):
-        return f'images\{self.get_guid()}.png'
+        if platform.system() == "Windows":
+            return f'images\{self.get_guid()}.png'
+        elif platform.system() == "Linux":
+            return f'images/{self.get_guid()}.png'
     
     def prueba(self):                
         ruta = ""
