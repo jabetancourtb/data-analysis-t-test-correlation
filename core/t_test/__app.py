@@ -115,7 +115,7 @@ class t_test_app(object):
         
         for i in self.list_box.curselection():
             options.append(self.list_box.get(i))
-        
+
         if len(self.cola_list) == 0:
             self.cola_list = options
         
@@ -126,13 +126,14 @@ class t_test_app(object):
      
         
     def generate_one_sample_t_test(self):
+        column = self.cola_list[0]
         self.sample_size = int(self.sample_size_input.get())
              
-        if self.options != "":            
-            t_statictic = t_test(self.data_file).one_sample_t_test(self.sample_size, self.options)[0]
-            p_value = t_test(self.data_file).one_sample_t_test(self.sample_size, self.options)[1]
+        if column != "":            
+            t_statictic = t_test(self.data_file).one_sample_t_test(self.sample_size, column)[0]
+            p_value = t_test(self.data_file).one_sample_t_test(self.sample_size, column)[1]
             return_t_test = {}
-            return_t_test['text'] = f'T Test of: "{self.options}" with "{self.sample_size}" samples'
+            return_t_test['text'] = f'T Test of: "{column}" with "{self.sample_size}" samples'
             return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
             return_t_test['text3'] = '' 
             self.data_result.append(return_t_test)
@@ -141,15 +142,16 @@ class t_test_app(object):
         self.toplevel.destroy()
         
         
-    def generate_paired_t_test():
-        if len(options) > 1:            
-            for idx, valx in enumerate(options):
-                for idy, valy in enumerate(options):
+    def generate_paired_t_test(self):
+        columns = self.cola_list
+        if len(columns) > 1:            
+            for idx, valx in enumerate(columns):
+                for idy, valy in enumerate(columns):
                     if idx < idy:
-                        t_statictic = t_test(self.data_file).paired_t_test(self.options[0], self.options[1])[0]
-                        p_value = t_test(self.data_file).paired_t_test(self.options[0], self.options[1])[1]
+                        t_statictic = t_test(self.data_file).paired_t_test(valx, valy)[0]
+                        p_value = t_test(self.data_file).paired_t_test(valx, valy)[1]
                         return_t_test = {}
-                        return_t_test['text'] = f'T Test of: "{self.options}" with "{self.sample_size}" samples'
+                        return_t_test['text'] = f'T Test of: "{valx}" and "{valy}" is'
                         return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
                         return_t_test['text3'] = ''                  
                         self.data_result.append(return_t_test)

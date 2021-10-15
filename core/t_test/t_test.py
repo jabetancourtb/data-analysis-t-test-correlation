@@ -33,6 +33,8 @@ class t_test(object):
             print("The alternate hypothesis is rejected and the null hypothesis is taken. The two groups are the same")
         else:
             print("The null hypothesis is rejected and the alternate hypothesis is taken. The two groups are different")
+        
+        return t_statictic
             
 
 
