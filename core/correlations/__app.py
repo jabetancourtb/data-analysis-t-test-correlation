@@ -12,7 +12,7 @@ class correlacion_app(object):
                 
         self.toplevel = Toplevel(root)
         self.toplevel.title("Confirmation")
-        self.toplevel.geometry("600x400")
+        self.toplevel.geometry("500x300")
         self.toplevel.config(bg="white")          
     
     
@@ -93,14 +93,14 @@ class correlacion_app(object):
                             
                             returl_pearson['text'] = f'Pearson correlation of: "{valx}" and "{valy}"'
                             returl_pearson['text2'] = correlacion_test(self.data_file).pearson_cor(valx, valy)                      
-                            returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], "")
+                            returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
                             returl_pearson['text3'] = ''
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
                             returl_pearson['text'] = f'Spearman correlation of, "{valx}" and "{valy}"'
                             returl_pearson['text2'] = correlacion_test(self.data_file).spearman_cor(valx, valy) 
-                            returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], "")
+                            returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
                             returl_pearson['text3'] = ''
                             
                         self.data_result.append(returl_pearson)
