@@ -25,7 +25,7 @@ class t_test(object):
           
     # ------------- Function for paired t test with two samples ------------- #
     def paired_t_test(self, column_1, column_2):
-        t_statictic = stats.ttest_ind(a = column_1, b = column_2)
+        t_statictic = stats.ttest_ind(a = self.data_file[column_1], b = self.data_file[column_2])
         print(f"Test statistic: {t_statictic[0]:.03f}, p-value: {t_statictic[1]:.03f}")
         alpha = 0.05
         
