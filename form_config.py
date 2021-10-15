@@ -112,7 +112,7 @@ class form_config(object):
                 self.add_text(r['text'])
             
             if "image" in r:
-                self.add_image(r['image'], r['image_width'], r['image_height'])
+                self.add_image(r['image'], 500, 400)#, r['image_width'], r['image_height'])
                 
             index = 2
             for x in range(10):
@@ -167,6 +167,5 @@ class form_config(object):
         path = 'files\\tutorial.pdf'                
         subprocess.Popen([path], shell=True)
         
-    
         
     
