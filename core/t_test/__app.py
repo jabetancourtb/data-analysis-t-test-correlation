@@ -10,7 +10,7 @@ class t_test_app(object):
     def __init__(self, root):
         self.toplevel = Toplevel(root)
         self.toplevel.title("Confirmation")
-        self.toplevel.geometry("500x300")
+        self.toplevel.geometry("500x500")
         self.toplevel.config(bg="white")        
     
     
