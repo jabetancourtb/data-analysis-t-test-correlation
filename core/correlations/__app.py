@@ -92,16 +92,18 @@ class correlacion_app(object):
                         if _seleccionRadio.get() == 1:
                             
                             returl_pearson['text'] = f'Pearson correlation of: "{valx}" and "{valy}"'
-                            returl_pearson['text2'] = correlacion_test(self.data_file).pearson_cor(valx, valy)                      
+                            returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
+                            returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)                      
                             returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
-                            returl_pearson['text3'] = ''
+                            returl_pearson['text4'] = ''
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
                             returl_pearson['text'] = f'Spearman correlation of, "{valx}" and "{valy}"'
-                            returl_pearson['text2'] = correlacion_test(self.data_file).spearman_cor(valx, valy) 
+                            returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
+                            returl_pearson['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy) 
                             returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'])
-                            returl_pearson['text3'] = ''
+                            returl_pearson['text4'] = ''
                             
                         self.data_result.append(returl_pearson)
         
