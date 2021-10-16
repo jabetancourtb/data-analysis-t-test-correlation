@@ -1,7 +1,7 @@
 from tkinter import ttk, StringVar, IntVar, Button, Listbox, Radiobutton, Toplevel, MULTIPLE
 from core.correlations.correlation_test import correlacion_test
 from logic_graphics import logic_graphics
-
+import time
 
 
 class correlacion_app(object):
@@ -73,8 +73,8 @@ class correlacion_app(object):
         self.toplevel.destroy()
         
         
-    def generate_correlation(self):    
-        
+    def generate_correlation(self):      
+   
         options = []
         
         for i in self.list_box.curselection():
@@ -89,25 +89,33 @@ class correlacion_app(object):
                         returl_spearman = {}
                         #Pearson correlation
                         if _seleccionRadio.get() == 1:
-                            
+                            time_start = time.time()
                             returl_pearson['text'] = f'Pearson correlation of: "{valx}" and "{valy}"'
                             returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
                             returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)                      
                             returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
-                            returl_pearson['text4'] = ''
+                            time_end = time.time()
+                            returl_pearson['text4'] = f'Process time: {time_end - time_start}'
+                            returl_spearman['text4'] = ''
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
+                            time_start = time.time()
                             returl_spearman['text'] = f'spearman correlation of, "{valx}" and "{valy}"'
                             returl_spearman['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
                             returl_spearman['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
                             returl_spearman['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
+                            time_end = time.time()
+                            returl_spearman['text4'] = f'Process time: {time_end - time_start}'
                             returl_spearman['text4'] = ''
                             
                         self.data_result.append(returl_pearson)
                         self.data_result.append(returl_spearman)
             heat_map = {}
+            time_start = time.time()
             heat_map['image2'] = logic_graphics().graphyc_matshow(self.data_file[options])
+            time_end = time.time()
+            heat_map['text'] = f'Process time: {time_end - time_start}'
             self.data_result.append(heat_map)
         else:           
             returl_pearson = {}
