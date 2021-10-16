@@ -9,13 +9,14 @@ class logic_graphics(object):
     def __init__(self):
         self.data = "";
         
-    def graphyc_scatter(self, value_x, value_y, title):
+    def graphyc_scatter(self, value_x, value_y, title,label_x, label_y):
         path_img = self.get_path_img()
         fig, ax1 = plt.subplots(1, 1, figsize=(10,5))
 
         ax1.scatter(value_x, value_y)
         ax1.set_title(title)
-        
+        ax1.set_xlabel(label_x)
+        ax1.set_ylabel(label_y)
         fig.savefig(path_img, format='png')
         
         if platform.system() == "Windows":
