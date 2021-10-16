@@ -113,7 +113,9 @@ class form_config(object):
             
             if "image" in r:
                 self.add_image(r['image'], 500, 400)#, r['image_width'], r['image_height'])
-                
+
+            if "image2" in r:
+                self.add_image(r['image2'], 500, 400)#, r['image_width'], r['image_height'])
             index = 2
             for x in range(10):
                 if f'text{index}' in r:

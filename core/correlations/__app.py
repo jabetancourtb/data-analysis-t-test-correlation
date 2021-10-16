@@ -1,10 +1,9 @@
 from tkinter import *
-from tkinter import filedialog
 from tkinter import ttk
 from core.correlations.correlation_test import correlacion_test
 from logic_graphics import logic_graphics
-import pandas as pd
-import os
+
+
 
 class correlacion_app(object):
     
@@ -106,7 +105,9 @@ class correlacion_app(object):
                             returl_pearson['text4'] = ''
                             
                         self.data_result.append(returl_pearson)
-        
+            heat_map = {}
+            heat_map['image2'] = logic_graphics().graphyc_matshow(self.data_file[options])
+            self.data_result.append(heat_map)
         else:           
             returl_pearson = {}
             returl_pearson['text'] = f'Minimo seleccione 2 propiedades para generar la correlacion'

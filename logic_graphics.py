@@ -28,12 +28,12 @@ class logic_graphics(object):
         path_img = self.get_path_img()
         corr = plot_data.corr()
         
-        fig = plt.figure(figsize=(10,8))
+        fig = plt.figure()
         plt.matshow(corr, fignum=fig.number)
         plt.xticks(range(len(plot_data.columns)), plot_data.columns)
         plt.yticks(range(len(plot_data.columns)), plot_data.columns)
         plt.colorbar()
-        plt.ylim([5.5, -0.5])
+        # plt.ylim([5.5, -0.5])
         
         fig.savefig(path_img, format='png')
       
@@ -45,7 +45,7 @@ class logic_graphics(object):
         
     def graphyc_ylabel(self, data, title_y):
         path_img = self.get_path_img()
-        fig = plt.figure(figsize=(10,8))        
+        fig = plt.figure()
         plt.plot(data)
         plt.ylabel('some numbers')
         plt.show()
