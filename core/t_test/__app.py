@@ -4,6 +4,7 @@ from tkinter import ttk
 from core.t_test.t_test import t_test
 import pandas as pd
 import os
+import time
 
 class t_test_app(object):
     
@@ -129,13 +130,16 @@ class t_test_app(object):
         column = self.cola_list[0]
         self.sample_size = int(self.sample_size_input.get())
              
-        if column != "":            
+        if column != "":       
+            time_start = time.time()
             t_statictic = t_test(self.data_file).one_sample_t_test(self.sample_size, column)[0]
             p_value = t_test(self.data_file).one_sample_t_test(self.sample_size, column)[1]
+            time_end = time.time()
             return_t_test = {}
             return_t_test['text'] = f'T Test of: "{column}" with "{self.sample_size}" samples'
             return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
-            return_t_test['text3'] = '' 
+            return_t_test['text3'] = f'Process time: {time_end - time_start}' 
+            return_t_test['text4'] = ''
             self.data_result.append(return_t_test)
                 
         print(self.data_result)                                             
@@ -148,12 +152,15 @@ class t_test_app(object):
             for idx, valx in enumerate(columns):
                 for idy, valy in enumerate(columns):
                     if idx < idy:
+                        time_start = time.time()
                         t_statictic = t_test(self.data_file).paired_t_test(valx, valy)[0]
                         p_value = t_test(self.data_file).paired_t_test(valx, valy)[1]
+                        time_end = time.time()
                         return_t_test = {}
                         return_t_test['text'] = f'T Test of: "{valx}" and "{valy}" is'
                         return_t_test['text2'] = f'Test statistic: {t_statictic}, p-value: {p_value}'                  
-                        return_t_test['text3'] = ''                  
+                        return_t_test['text3'] = f'Process time: {time_end - time_start}'     
+                        return_t_test['text4'] = ''
                         self.data_result.append(return_t_test)
                                                         
         self.toplevel.destroy()

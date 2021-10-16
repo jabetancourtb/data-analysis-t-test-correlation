@@ -1,7 +1,7 @@
 from tkinter import ttk, StringVar, IntVar, Button, Listbox, Radiobutton, Toplevel, MULTIPLE
 from core.correlations.correlation_test import correlacion_test
 from logic_graphics import logic_graphics
-
+import time
 
 
 class correlacion_app(object):
@@ -50,7 +50,7 @@ class correlacion_app(object):
         radio4 = Radiobutton(self.toplevel, text="Reduce View", variable=_seleccionRadioFullView, value=2)
         radio4.place(x=280, y=260)
         _seleccionRadioFullView.set(1)
-             
+
         
         
         self.list_box = Listbox(self.toplevel, listvariable=_headers, selectmode=MULTIPLE, width=20, height=10)
@@ -83,8 +83,8 @@ class correlacion_app(object):
         self.toplevel.destroy()
         
         
-    def generate_correlation(self):    
-        
+    def generate_correlation(self):
+
         options = []
         
         for i in self.list_box.curselection():
@@ -99,7 +99,7 @@ class correlacion_app(object):
                         returl_spearman = {}
                         #Pearson correlation
                         if _seleccionRadio.get() == 1:
-                            
+                            time_start = time.time()
                             returl_pearson['text'] = f'Pearson correlation of: "{valx}" and "{valy}"'
                             if _seleccionRadioFullView.get() == 1:
                                 returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)
@@ -112,6 +112,7 @@ class correlacion_app(object):
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
+                            time_start = time.time()
                             returl_spearman['text'] = f'spearman correlation of, "{valx}" and "{valy}"'
                             if _seleccionRadioFullView.get() == 1:
                                 returl_spearman['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
@@ -125,8 +126,11 @@ class correlacion_app(object):
                         self.data_result.append(returl_pearson)
                         self.data_result.append(returl_spearman)
             if _seleccionRadioFullView.get() == 1:
+                time_start = time.time()
                 heat_map = {}
                 heat_map['image2'] = logic_graphics().graphyc_matshow(self.data_file[options])
+                time_end = time.time()
+                heat_map['text'] = f'Process time: {time_end - time_start}'
                 self.data_result.append(heat_map)
         else:           
             returl_pearson = {}
