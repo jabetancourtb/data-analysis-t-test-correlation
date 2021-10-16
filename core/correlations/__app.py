@@ -105,11 +105,14 @@ class correlacion_app(object):
                                 returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)
                                 returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
                                 returl_pearson['image'] = returl_pearson['text2']
+                                time_end = time.time()
+                                returl_pearson['text4'] = f'Process time: {time_end - time_start}'
+                                returl_pearson['text5'] = ''
                             else:
                                 returl_pearson['text2'] = correlacion_test(self.data_file).pearson_cor(valx, valy)
-                            time_end = time.time()
-                            returl_pearson['text4'] = f'Process time: {time_end - time_start}'
-                            returl_spearman['text4'] = ''
+                                time_end = time.time()
+                                returl_pearson['text3'] = f'Process time: {time_end - time_start}'
+                                returl_pearson['text4'] = ''
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
@@ -119,12 +122,14 @@ class correlacion_app(object):
                                 returl_spearman['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
                                 returl_spearman['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
                                 returl_spearman['image'] = returl_spearman['text2']
+                                time_end = time.time()
+                                returl_spearman['text4'] = f'Process time: {time_end - time_start}'
+                                returl_spearman['text5'] = ''
                             else:
                                 returl_spearman['text2'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
-
-                            time_end = time.time()
-                            returl_pearson['text4'] = f'Process time: {time_end - time_start}'
-                            returl_spearman['text4'] = ''
+                                time_end = time.time()
+                                returl_spearman['text3'] = f'Process time: {time_end - time_start}'
+                                returl_spearman['text4'] = ''
                             
                         self.data_result.append(returl_pearson)
                         self.data_result.append(returl_spearman)
