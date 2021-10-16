@@ -42,6 +42,14 @@ class correlacion_app(object):
         radio2 = Radiobutton(self.toplevel, text="Spearman correlation", variable=_seleccionRadio, value=2)
         radio2.place(x=280, y=100)
         _seleccionRadio.set(1)
+
+
+        radio3 = Radiobutton(self.toplevel, text="Full View", variable=_seleccionRadioFullView, value=1)
+        radio3.place(x=280, y=200)
+
+        radio4 = Radiobutton(self.toplevel, text="Reduce View", variable=_seleccionRadioFullView, value=2)
+        radio4.place(x=280, y=260)
+        _seleccionRadioFullView.set(1)
              
         
         
@@ -62,9 +70,11 @@ class correlacion_app(object):
     def init_variable(self):
         global _headers
         global _seleccionRadio
-        
+        global _seleccionRadioFullView
+
         _headers = StringVar() 
         _seleccionRadio = IntVar()
+        _seleccionRadioFullView = IntVar()
 
     
     def cancel_correlation(self):
@@ -91,24 +101,33 @@ class correlacion_app(object):
                         if _seleccionRadio.get() == 1:
                             
                             returl_pearson['text'] = f'Pearson correlation of: "{valx}" and "{valy}"'
-                            returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
-                            returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)                      
-                            returl_pearson['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
+                            if _seleccionRadioFullView.get() == 1:
+                                returl_pearson['text3'] = correlacion_test(self.data_file).pearson_cor(valx, valy)
+                                returl_pearson['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_pearson['text'],valx,valy)
+                                returl_pearson['image'] = returl_pearson['text2']
+                            else:
+                                returl_pearson['text2'] = correlacion_test(self.data_file).pearson_cor(valx, valy)
+
                             returl_pearson['text4'] = ''
     
                         #Spearman correlation
                         if _seleccionRadio.get() == 2:
                             returl_spearman['text'] = f'spearman correlation of, "{valx}" and "{valy}"'
-                            returl_spearman['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
-                            returl_spearman['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
-                            returl_spearman['image'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
+                            if _seleccionRadioFullView.get() == 1:
+                                returl_spearman['text3'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
+                                returl_spearman['text2'] = logic_graphics().graphyc_scatter(self.data_file[valx], self.data_file[valy], returl_spearman['text'],valx,valy)
+                                returl_spearman['image'] = returl_spearman['text2']
+                            else:
+                                returl_spearman['text2'] = correlacion_test(self.data_file).spearman_cor(valx, valy)
+
                             returl_spearman['text4'] = ''
                             
                         self.data_result.append(returl_pearson)
                         self.data_result.append(returl_spearman)
-            heat_map = {}
-            heat_map['image2'] = logic_graphics().graphyc_matshow(self.data_file[options])
-            self.data_result.append(heat_map)
+            if _seleccionRadioFullView.get() == 1:
+                heat_map = {}
+                heat_map['image2'] = logic_graphics().graphyc_matshow(self.data_file[options])
+                self.data_result.append(heat_map)
         else:           
             returl_pearson = {}
             returl_pearson['text'] = f'Minimo seleccione 2 propiedades para generar la correlacion'
